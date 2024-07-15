@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import toast from 'react-hot-toast';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
-const SignupForm = () => {
+import { useNavigate } from 'react-router-dom';
+const SignupForm = ({setIsLoggedIn}) => {
   const [signupFormData, setSignupFormData] = useState({
     firstName: "",
     lastName: "",
@@ -8,6 +10,8 @@ const SignupForm = () => {
     createPassword: "",
     confirmPassword: ""
   })
+
+  const redirect = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -18,6 +22,17 @@ const SignupForm = () => {
         [event.target.name]: event.target.value
       }
     })
+  }
+
+  function submitHandler(event){
+    event.preventDefault();
+    if(signupFormData.createPassword !== signupFormData.confirmPassword){
+      toast.error("Password does not match");
+      return;
+    }
+    setIsLoggedIn(true);
+    toast.success("Account created");
+    redirect("/dashboard");
   }
   return (
     <div>
@@ -30,7 +45,7 @@ const SignupForm = () => {
         </button>
       </div>
 
-      <form>
+      <form onSubmit={submitHandler}>
         <div>
           <label>
             <p>First Name<sup>*</sup></p>
@@ -70,7 +85,7 @@ const SignupForm = () => {
               onChange={changeHandler}
               value={signupFormData.createPassword} />
               <span onClick={() => {
-              setShowPassword((prev) => { !prev })
+              setShowPassword(prev => !prev )
               }}>
               {
                 showPassword ? (<AiOutlineEyeInvisible />) : (<AiOutlineEye />)
@@ -86,7 +101,7 @@ const SignupForm = () => {
               onChange={changeHandler}
               value={signupFormData.confirmPassword} />
               <span onClick={() => {
-              setShowPassword((prev) => { !prev })
+              setShowPassword(prev =>  !prev )
               }}>
               {
                 showPassword ? (<AiOutlineEyeInvisible />) : (<AiOutlineEye />)
