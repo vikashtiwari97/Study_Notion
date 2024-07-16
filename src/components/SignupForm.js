@@ -14,6 +14,7 @@ const SignupForm = ({setIsLoggedIn}) => {
   const redirect = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setConfirmShowPassword] = useState(false);
   const [accountType, setAccountType] = useState("student");
 
   function changeHandler(event) {
@@ -33,6 +34,14 @@ const SignupForm = ({setIsLoggedIn}) => {
     }
     setIsLoggedIn(true);
     toast.success("Account created");
+    const accountData = {
+      ...signupFormData
+    }
+    const finalData = {
+      ...accountData,
+      accountType
+    }
+    console.log(finalData);
     redirect("/dashboard");
   }
   return (
@@ -113,7 +122,7 @@ const SignupForm = ({setIsLoggedIn}) => {
           </label>
           <label className='w-full relative'>
               <p className='text-[0.875rem] text-white mb-1 leading-[1.375rem]'>Confirm Password<sup className='text-pink-200'>*</sup></p>
-              <input type={showPassword ? ("text") : ("password")}
+              <input type={showConfirmPassword ? ("text") : ("password")}
               name="confirmPassword"
               placeholder="Confirm Password"
               required
@@ -123,10 +132,10 @@ const SignupForm = ({setIsLoggedIn}) => {
               />
               <span className='absolute right-3 top-[38px] cursor-pointer' 
               onClick={() => {
-              setShowPassword(prev =>  !prev )
+                setConfirmShowPassword(prev =>  !prev )
               }}>
               {
-                showPassword ? (<AiOutlineEyeInvisible fontSize={24} fill='#AFB2BF' />) : (<AiOutlineEye fontSize={24} fill='#AFB2BF' />)
+                showConfirmPassword ? (<AiOutlineEyeInvisible fontSize={24} fill='#AFB2BF' />) : (<AiOutlineEye fontSize={24} fill='#AFB2BF' />)
               }
             </span>
           </label>
